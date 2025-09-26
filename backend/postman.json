@@ -1,0 +1,80 @@
+{
+  "info": {
+    "name": "Visitor Management System",
+    "_postman_id": "f7d89a2b-9df4-4a2e-b2af-1a2b7d7d6e2d",
+    "description": "API tests for Visitor Management System (MERN backend).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Visitors",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/visitors",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "visitors"]
+        }
+      }
+    },
+    {
+      "name": "Register Visitor (Security)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "name", "value": "John Doe", "type": "text" },
+            { "key": "phone", "value": "08123456789", "type": "text" },
+            { "key": "purpose", "value": "Meeting with HR", "type": "text" },
+            { "key": "host", "value": "670123456789abcd12345678", "type": "text" },
+            {
+              "key": "photo",
+              "type": "file",
+              "src": "/C:/Users/USER/Pictures/visitor1.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/visitors/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "visitors", "register"]
+        }
+      }
+    },
+    {
+      "name": "Confirm Visitor (Receptionist)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/visitors/670123456789abcd12345678/confirm",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "visitors", "670123456789abcd12345678", "confirm"]
+        }
+      }
+    },
+    {
+      "name": "Checkout Visitor (Security)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/visitors/670123456789abcd12345678/checkout",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "visitors", "670123456789abcd12345678", "checkout"]
+        }
+      }
+    }
+  ]
+}
