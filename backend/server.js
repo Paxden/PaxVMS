@@ -13,11 +13,15 @@ dotenv.config();
 const app = express();
 
 // -------------------- Middleware --------------------
-const allowedOrigins = ["http://localhost:5173", "https://pax-vms.vercel.app"];
-
 app.use(
-  cors()
+  cors({
+    origin: function (origin, callback) {
+      callback(null, true); // allow everything
+    },
+    credentials: true,
+  })
 );
+
 app.use(express.json()); // parse JSON bodies
 
 // ✅ Request logger
