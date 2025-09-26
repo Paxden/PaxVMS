@@ -1,9 +1,12 @@
 import axios from "axios";
 
+
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5001/api",
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5001/api",
+  withCredentials: true, // 🔑 send cookies with requests
 });
+
+
 
 // -------------------- Auth --------------------
 export const loginUser = (data) => API.post("/users/login", data);

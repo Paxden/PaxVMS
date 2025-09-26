@@ -13,12 +13,21 @@ dotenv.config();
 const app = express();
 
 // -------------------- Middleware --------------------
+const allowedOrigins = [
+  "http://localhost:5173", // local dev
+  "https://pax-vms.vercel.app", // vercel frontend
+];
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      callback(null, true); // allow everything
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
     },
-    credentials: true,
+    credentials: true, // 🔑 send cookies
   })
 );
 
@@ -40,9 +49,11 @@ app.use((req, res, next) => {
 });
 
 // ✅ Session setup
+app.set("trust proxy", 1); // needed for secure cookies on Render
+
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "supersecret", // use env var in prod
+    secret: process.env.SESSION_SECRET || "supersecret",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
@@ -50,8 +61,9 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      httpOnly: true, // protects against XSS
-      secure: process.env.NODE_ENV === "production", // true if HTTPS
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // only secure in prod
+      sameSite: "none", // 🔑 allow cross-site cookies
       maxAge: 1000 * 60 * 60 * 2, // 2 hours
     },
   })
